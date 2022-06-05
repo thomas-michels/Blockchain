@@ -4,11 +4,15 @@
 from typing import Dict
 from confluent_kafka import Consumer as ConfluentConsumer
 from app.utils import Singleton
+from app.configs import get_logger, get_environment
+
+_logger = get_logger(name=__name__)
+_env = get_environment()
 
 
 class Consumer(Singleton):
     """
-    Consumer class
+    Kafka Consumer class
     """
 
     __topics = []
@@ -25,18 +29,19 @@ class Consumer(Singleton):
             self.__topics.append(topic_name)
 
         else:
-            # TODO logger
-            pass
+            _logger.info(f"Duplicated topic - {topic_name}")
 
-    def 
+    def __check_topic(self, topic_name) -> bool:
+        if topic_name in self.__topics:
+            return True
+        return False
 
     def start_connection(self) -> ConfluentConsumer:
         try:
             return ConfluentConsumer(self.__generate_payload())
 
         except Exception:
-            pass
-            # _logger.error("Error on connect Consumer")
+            _logger.error("Error on connect Consumer")
 
     def __generate_payload(self) -> Dict[str, str]:
         return {
