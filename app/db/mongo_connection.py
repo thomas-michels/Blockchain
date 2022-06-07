@@ -6,16 +6,18 @@ import mongoengine
 from pymongo.errors import ServerSelectionTimeoutError
 from app.configs import get_environment, get_logger
 from app.exceptions import MongoConnectionException
+from app.utils import Singleton
 
 _logger = get_logger(name=__name__)
 _env = get_environment()
 
 
-class MongoDB:
+class MongoDB(Singleton):
     """
     MongoDB connection class
     """
     def __init__(self):
+        super.__init__()
         self.__set_connection()
 
     def __set_connection(self):

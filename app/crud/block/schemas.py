@@ -10,10 +10,16 @@ class BlockSchema(BaseModel):
     """
     Block Schema
     """
-
-    id: str = Field(example="16f8ddc6-3697-4b90-a5c5-1b60e26de6dc") 
+ 
     data: List = Field()
     hash: str = Field()
     previous_hash: str = Field()
     timestamp: float = Field()
     nonce: int = Field()
+
+
+class BlockSchemaInDB(BlockSchema):
+    """
+    Block schema in db class
+    """
+    id: str = Field(example="16f8ddc6-3697-4b90-a5c5-1b60e26de6dc")

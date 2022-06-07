@@ -19,3 +19,12 @@ class BlockModel(Document, SafeDocumentMixin):
     nonce = IntField(required=True)
 
     meta = {"collection": "blocks", "indexes": ["id"]}
+
+    def serialize(self) -> dict:
+        return {
+            "data": self.data,
+            "hash": self.hash,
+            "previous_hash": self.previous_hash,
+            "timestamp": self.timestamp,
+            "nonce": self.nonce
+        }

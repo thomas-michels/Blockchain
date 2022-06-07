@@ -3,7 +3,7 @@ This is a safe document mixing module
 """
 
 import time
-from app.config import get_logger
+from app.configs import get_logger
 from app.exceptions import (
     MongoSaveException,
     MongoObjectsException,
