@@ -1,0 +1,3 @@
+"""
+    Module for blocks callbacks
+"""

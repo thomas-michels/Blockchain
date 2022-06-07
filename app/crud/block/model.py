@@ -22,6 +22,7 @@ class BlockModel(Document, SafeDocumentMixin):
 
     def serialize(self) -> dict:
         return {
+            "id": self.id,
             "data": self.data,
             "hash": self.hash,
             "previous_hash": self.previous_hash,
