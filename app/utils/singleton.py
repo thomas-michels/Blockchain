@@ -1,14 +1,26 @@
 """
-Module to singleton class
+    Module to define SingletonMeta Meta Class
 """
+from threading import Lock
+from weakref import WeakValueDictionary
 
 
-class Singleton:
+class SingletonMeta(type):
     """
-    Singleton class
+    This is a thread-safe implementation of SingletonMeta.
     """
 
-    def __new__(cls):
-        if not hasattr(cls, "instance"):
-            cls.instance = super(Singleton, cls).__new__(cls)
-        return cls.instance
+    _instances = WeakValueDictionary()
+
+    _lock: Lock = Lock()
+    """
+    We now have a lock object that will be used to synchronize threads during
+    first access to the SingletonMeta.
+    """
+
+    def __call__(cls, *args, **kwargs):
+        with cls._lock:
+            if cls not in cls._instances:
+                instance = super().__call__(*args, **kwargs)
+                cls._instances[cls] = instance
+        return cls._instances[cls]
