@@ -1,0 +1,6 @@
+kombu
+mongoengine
+pydantic
+pymongo
+pydantic[dotenv]
+pymongo[srv]
