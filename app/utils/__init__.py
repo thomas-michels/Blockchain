@@ -3,4 +3,4 @@
 """
 
 from app.utils.singleton import SingletonMeta
-from app.utils.event_schema import EventSchema
+from app.utils.validate_event import payload_conversor

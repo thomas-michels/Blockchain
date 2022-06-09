@@ -6,6 +6,7 @@ from kombu.mixins import ConsumerMixin
 from app.configs import get_logger
 from app.exceptions import QueueNotFound
 from app.queues import QueueManager
+from app.utils import payload_conversor
 
 _logger = get_logger(name=__name__)
 
@@ -27,9 +28,10 @@ class KombuWorker(ConsumerMixin):
     def process_task(self, body, message):
         try:
             infos = message.delivery_info
-            _logger.info(f"Message received to {infos['routing_key']}")
+            _logger.info(f"Message received at {infos['routing_key']}")
             function = self.queues.get_function(infos["routing_key"])
-            if function(body):
+            event_schema = payload_conversor(body)
+            if function(event_schema):
                 message.ack()
         except QueueNotFound:
             _logger.error("Callback not found!")

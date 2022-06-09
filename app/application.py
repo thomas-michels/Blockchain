@@ -6,6 +6,7 @@ from kombu import Connection
 from app.queues import QueueManager
 from app.configs import get_logger, get_environment
 from app.worker import KombuWorker
+from app.callbacks import RegisterBlockCallback
 
 _logger = get_logger(name=__name__)
 _env = get_environment()
@@ -19,9 +20,9 @@ class Application:
 
         self.queue_manager = QueueManager()
 
-        # self.queue_manager.register_callback(
-        #     _env.RBMQ_ICEBEV_SETTINGS_CHANNEL, SettingsChannelCallback().handle
-        # )
+        self.queue_manager.register_callback(
+            _env.BLOCK_CHANNEL, RegisterBlockCallback().handle
+        )
 
         self.start_consuming()
 

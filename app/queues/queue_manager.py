@@ -2,7 +2,7 @@
 Queue manager file
 """
 
-from typing import Any, List, NoReturn
+from typing import Any, List
 from app.utils import SingletonMeta
 from kombu import Exchange, Queue
 from app.configs import get_environment, get_logger
@@ -25,7 +25,7 @@ class QueueManager(metaclass=SingletonMeta):
     def destroy(self):
         self._queues = []
 
-    def register_callback(self, queue_name: str, function: Any) -> NoReturn:
+    def register_callback(self, queue_name: str, function: Any) -> None:
         """
         Method to register new callback
 
@@ -95,7 +95,9 @@ class QueueManager(metaclass=SingletonMeta):
             Exchange
         """
 
-        queue_exchange = Exchange(name=_env.RBMQ_EXCHANGE_SETTINGS_BIFROST, type="direct")
+        queue_exchange = Exchange(
+            name=_env.RBMQ_EXCHANGE, type="direct"
+        )
         return queue_exchange
 
     def _create_queue(self, queue_name: str, queue_exchange: Exchange) -> Queue:
@@ -114,7 +116,7 @@ class QueueManager(metaclass=SingletonMeta):
             exchange=queue_exchange,
             routing_key=queue_name,
             queue_arguments={
-                "x-dead-letter-exchange": f"{_env.RBMQ_EXCHANGE_SETTINGS_BIFROST}.master",
+                "x-dead-letter-exchange": f"{_env.RBMQ_EXCHANGE}",
                 "x-dead-letter-routing-key": "delay",
                 "durable": True,
             },
