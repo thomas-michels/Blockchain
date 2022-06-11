@@ -4,26 +4,28 @@
 
 from typing import List
 from app.db import BaseRepository
-from app.crud.block.schemas import BlockSchema, BlockSchemaInDB
+from app.crud.block import BlockSchema, BlockSchemaInDB
 from app.crud.block.model import BlockModel
+
 
 class BlockRepository(BaseRepository):
     """
     BlockRepository class
     """
 
-    def create(self, item: BlockSchema) -> BlockSchemaInDB:
+    def create(self, item: BlockSchemaInDB) -> BlockSchemaInDB:
         """
         This method save item in BlockModel
 
         :params:
-            item: BlockSchema
+            item: BlockSchemaInDB
 
         :return:
             BlockSchema
         """
-        block = BlockModel(**item.dict()).save_safe() 
-        return BlockSchemaInDB(**block.serialize())
+        item_serialized = item.dict()
+        BlockModel(**item_serialized).save_safe()
+        return item
 
     def get(self) -> List[BlockSchemaInDB]:
         """
@@ -38,6 +40,10 @@ class BlockRepository(BaseRepository):
     def get_by_id(self, id: str) -> BlockSchemaInDB:
         block_model = self.__get_by_id(id)
         return BlockSchemaInDB(**block_model.serialize())
+
+    def get_previous_hash(self) -> str:
+        block_model = BlockModel.objects_safe().last()
+        return block_model.hash
 
     def delete(self, id: str) -> BlockSchemaInDB:
         """

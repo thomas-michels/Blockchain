@@ -22,4 +22,13 @@ class BlockSchemaInDB(BlockSchema):
     """
     Block schema in db class
     """
-    id: str = Field(example="16f8ddc6-3697-4b90-a5c5-1b60e26de6dc")
+    block_id: str = Field(example="16f8ddc6-3697-4b90-a5c5-1b60e26de6dc")
+
+
+class SimpleBlockSchema(BaseModel):
+    """
+    Class for SimpleBlockSchema
+    """
+
+    data: List = Field()
+    nonce: int = Field()

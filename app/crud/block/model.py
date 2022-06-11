@@ -11,18 +11,18 @@ class BlockModel(Document, SafeDocumentMixin):
     Block model class
     """
 
-    id = StringField(required=True)
+    block_id = StringField(unique=True)
     data = ListField(required=True)
     hash = StringField(required=True)
     previous_hash = StringField(required=True)
     timestamp = FloatField(required=True)
     nonce = IntField(required=True)
 
-    meta = {"collection": "blocks", "indexes": ["id"]}
+    meta = {"collection": "blocks", "indexes": ["block_id", "previous_hash"]}
 
     def serialize(self) -> dict:
         return {
-            "id": self.id,
+            "block_id": self.block_id,
             "data": self.data,
             "hash": self.hash,
             "previous_hash": self.previous_hash,
