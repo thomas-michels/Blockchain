@@ -31,8 +31,10 @@ class KombuWorker(ConsumerMixin):
             _logger.info(f"Message received at {infos['routing_key']}")
             function = self.queues.get_function(infos["routing_key"])
             event_schema = payload_conversor(body)
-            if function(event_schema):
-                message.ack()
+            if event_schema:
+                if function(event_schema):
+                    message.ack()
+                    
         except QueueNotFound:
             _logger.error("Callback not found!")
 

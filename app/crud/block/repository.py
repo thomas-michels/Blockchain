@@ -42,8 +42,10 @@ class BlockRepository(BaseRepository):
         return BlockSchemaInDB(**block_model.serialize())
 
     def get_previous_hash(self) -> str:
-        block_model = BlockModel.objects_safe().last()
-        return block_model.hash
+        block_model = BlockModel.objects_safe().order_by('-id').first()
+        if block_model:
+            return block_model.hash
+        return ""
 
     def delete(self, id: str) -> BlockSchemaInDB:
         """

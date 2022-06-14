@@ -66,5 +66,5 @@ class BlockServices:
         :param block: BlockSchema
         :return: str
         """
-        self.__sha256.update(bytes(payload_str))
+        self.__sha256.update(bytes(payload_str, encoding="utf-8"))
         return self.__sha256.hexdigest()
