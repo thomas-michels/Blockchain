@@ -6,7 +6,11 @@ from kombu import Connection
 from app.queues import QueueManager
 from app.configs import get_logger, get_environment
 from app.worker import KombuWorker
-from app.callbacks import RegisterBlockCallback
+from app.callbacks import (
+    RegisterBlockCallback,
+    RegisterClientCallback,
+    SendBlocksToConsumers,
+)
 
 _logger = get_logger(name=__name__)
 _env = get_environment()
@@ -22,6 +26,14 @@ class Application:
 
         self.queue_manager.register_callback(
             _env.BLOCK_CHANNEL, RegisterBlockCallback().handle
+        )
+
+        self.queue_manager.register_callback(
+            _env.REGISTER_CHANNEL, RegisterClientCallback().handle
+        )
+
+        self.queue_manager.register_callback(
+            _env.VALIDATE_CHANNEL, SendBlocksToConsumers().handle
         )
 
         self.start_consuming()

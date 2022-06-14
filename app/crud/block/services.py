@@ -1,6 +1,7 @@
 """
     Module for block services
 """
+from typing import List
 from app.crud.block import BlockSchemaInDB, BlockRepository, SimpleBlockSchema
 from app.utils import Feedback
 from app.configs import get_logger
@@ -40,6 +41,14 @@ class BlockServices:
         except Exception as error:
             _logger.error(f"Block not saved. Error: {error}")
             return Feedback(is_success=False, message=error)
+
+    def get_all_blocks(self) -> List[BlockSchemaInDB]:
+        """
+        Method to get all blocks in DB
+
+        :return: List[BlockSchemaInDB]
+        """
+        return self.__repository.get()
 
     def __mount_block(self, simple_block: SimpleBlockSchema) -> BlockSchemaInDB:
         """

@@ -20,6 +20,7 @@ class Environment(BaseSettings):
     EVENT_CHANNEL: str
     ELECTION_CHANNEL: str
     REGISTER_CHANNEL: str
+    VALIDATE_CHANNEL: str
 
     class Config:
         """Load config file"""
