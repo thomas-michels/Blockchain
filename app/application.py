@@ -3,7 +3,7 @@ This module start connection with queues
 """
 
 from kombu import Connection
-from app.queues import QueueManager
+from app.worker.manager import QueueManager
 from app.configs import get_logger, get_environment
 from app.worker import KombuWorker
 from app.callbacks import (

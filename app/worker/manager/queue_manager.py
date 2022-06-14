@@ -4,10 +4,11 @@ Queue manager file
 
 from typing import Any, List
 from app.utils import SingletonMeta
-from kombu import Exchange, Queue
+from kombu import Queue
 from app.configs import get_environment, get_logger
-from app.queues.queue_callback import QueueCallback
+from app.worker.queues.queue_callback import QueueCallback
 from app.exceptions import QueueNotFound, CallbackAlreadyCreated
+from app.worker.queues import create_queue
 
 _env = get_environment()
 _logger = get_logger(name=__name__)
@@ -37,9 +38,8 @@ class QueueManager(metaclass=SingletonMeta):
             NoReturn
         """
         try:
-            queue_exchange = self._create_exchange()
-
-            queue = self._create_queue(queue_name.upper(), queue_exchange)
+            
+            queue = create_queue(queue_name.upper(), _env.RBMQ_EXCHANGE)
 
             queue_callback = QueueCallback(
                 queue_name=queue_name.upper(), queue=queue, function=function
@@ -86,38 +86,3 @@ class QueueManager(metaclass=SingletonMeta):
         for callback in self._queues:
             if callback.get_queue_name() == queue_name.upper():
                 return callback.get_queue()
-
-    def _create_exchange(self) -> Exchange:
-        """
-        Method to create exchange
-
-        :return:
-            Exchange
-        """
-
-        queue_exchange = Exchange(
-            name=_env.RBMQ_EXCHANGE, type="direct"
-        )
-        return queue_exchange
-
-    def _create_queue(self, queue_name: str, queue_exchange: Exchange) -> Queue:
-        """
-        Method to create queue
-
-        :parms:
-            queue_name: str
-            queue_exchange: Exchange
-
-        :return:
-            Queue
-        """
-        return Queue(
-            name=queue_name,
-            exchange=queue_exchange,
-            routing_key=queue_name,
-            queue_arguments={
-                "x-dead-letter-exchange": f"{_env.RBMQ_EXCHANGE}",
-                "x-dead-letter-routing-key": "delay",
-                "durable": True,
-            },
-        )

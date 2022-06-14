@@ -5,7 +5,7 @@ Kombu worker class module
 from kombu.mixins import ConsumerMixin
 from app.configs import get_logger
 from app.exceptions import QueueNotFound
-from app.queues import QueueManager
+from app.worker.manager import QueueManager
 from app.utils import payload_conversor
 
 _logger = get_logger(name=__name__)
@@ -34,7 +34,7 @@ class KombuWorker(ConsumerMixin):
             if event_schema:
                 if function(event_schema):
                     message.ack()
-                    
+
         except QueueNotFound:
             _logger.error("Callback not found!")
 
