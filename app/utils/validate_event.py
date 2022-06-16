@@ -17,8 +17,10 @@ def payload_conversor(raw_payload) -> EventSchema:
     :return: EventSchema
     """
     try:
-        payload = json.loads(raw_payload)
-        return EventSchema(**payload)
+        if type(raw_payload) != dict:
+            raw_payload = json.loads(raw_payload)
+
+        return EventSchema(**raw_payload)
 
     except ValidationError as err:
         _logger.error(

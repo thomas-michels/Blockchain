@@ -2,13 +2,12 @@
 This module start connection with queues
 """
 
-from kombu import Connection
 from app.worker.consumer import RegisterQueues
-from app.configs import get_logger, get_environment
+from app.configs import get_logger
 from app.worker import KombuWorker
+from app.worker.utils import start_connection_bus
 
 _logger = get_logger(name=__name__)
-_env = get_environment()
 
 
 class Application:
@@ -22,12 +21,6 @@ class Application:
 
     def start_consuming(self, queues):
         _logger.info("Start consuming...")
-        with Connection(
-            hostname=_env.RBMQ_HOST,
-            userid=_env.RBMQ_USER,
-            password=_env.RBMQ_PASS,
-            port=_env.RBMQ_PORT,
-            virtual_host=_env.RBMQ_VHOST,
-        ) as conn:
+        with start_connection_bus() as conn:
             worker = KombuWorker(conn, queues)
             worker.run()

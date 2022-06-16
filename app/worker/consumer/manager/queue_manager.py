@@ -38,7 +38,7 @@ class QueueManager(metaclass=SingletonMeta):
             NoReturn
         """
         try:
-            
+
             queue = create_queue(queue_name.upper(), _env.RBMQ_EXCHANGE)
 
             queue_callback = QueueCallback(
