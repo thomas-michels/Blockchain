@@ -6,9 +6,9 @@ from typing import Any, List
 from app.utils import SingletonMeta
 from kombu import Queue
 from app.configs import get_environment, get_logger
-from app.worker.queues.queue_callback import QueueCallback
+from app.worker.consumer.queues.queue_callback import QueueCallback
 from app.exceptions import QueueNotFound, CallbackAlreadyCreated
-from app.worker.queues import create_queue
+from app.worker.consumer.queues import create_queue
 
 _env = get_environment()
 _logger = get_logger(name=__name__)

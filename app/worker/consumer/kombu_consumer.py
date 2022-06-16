@@ -5,7 +5,7 @@ Kombu worker class module
 from kombu.mixins import ConsumerMixin
 from app.configs import get_logger
 from app.exceptions import QueueNotFound
-from app.worker.manager import QueueManager
+from app.worker.consumer.manager import QueueManager
 from app.utils import payload_conversor
 
 _logger = get_logger(name=__name__)
@@ -16,8 +16,8 @@ class KombuWorker(ConsumerMixin):
     This class is Kombu Worker
     """
 
-    def __init__(self, connection):
-        self.queues = QueueManager()
+    def __init__(self, connection, queues: QueueManager):
+        self.queues = queues
         self.connection = connection
 
     def get_consumers(self, consumer, channel):
