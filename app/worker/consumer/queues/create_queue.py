@@ -23,4 +23,5 @@ def create_queue(queue_name: str, exchange_name: str) -> Queue:
             "x-dead-letter-routing-key": "delay",
             "durable": True,
         },
+        auto_delete=True,
     )

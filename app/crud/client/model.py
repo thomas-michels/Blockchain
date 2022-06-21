@@ -12,6 +12,7 @@ class ClientModel(Document, SafeDocumentMixin):
     """
 
     client_id = StringField(unique=True)
+    name = StringField(required=True)
     connection_date = DateTimeField(required=True)
     active = BooleanField(required=True)
 
@@ -20,6 +21,7 @@ class ClientModel(Document, SafeDocumentMixin):
     def serialize(self) -> dict:
         return {
             "client_id": self.client_id,
+            "name": self.name,
             "connection_date": self.connection_date,
             "active": self.active,
         }

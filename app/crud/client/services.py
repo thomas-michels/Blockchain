@@ -57,6 +57,7 @@ class ClientServices:
         """
         payload = {}
         payload["client_id"] = simple_client.client_id
+        payload["name"] = simple_client.name
         payload["connection_date"] = datetime.now()
         payload["active"] = True
         return ClientSchema(**payload)

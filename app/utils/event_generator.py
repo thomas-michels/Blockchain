@@ -6,7 +6,7 @@ from app.utils.uuid_generator import generate_uuid
 from datetime import datetime
 
 
-def generate_event(send_to: str, payload: dict) -> EventSchema:
+def generate_event(client_id: str, send_to: str, payload: dict) -> EventSchema:
     """
     Function to generate valid EventSchema
 
@@ -17,6 +17,7 @@ def generate_event(send_to: str, payload: dict) -> EventSchema:
     """
     event = {
         "id": generate_uuid(),
+        "client_id": client_id,
         "sended_to": send_to,
         "payload": payload,
         "creation_date": datetime.now(),

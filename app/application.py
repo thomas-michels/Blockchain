@@ -21,6 +21,11 @@ class Application:
 
     def start_consuming(self, queues):
         _logger.info("Start consuming...")
-        with start_connection_bus() as conn:
-            worker = KombuWorker(conn, queues)
-            worker.run()
+        try:
+            with start_connection_bus() as conn:
+                worker = KombuWorker(conn, queues)
+                worker.run()
+
+        except KeyboardInterrupt:
+            _logger.info("Exiting...")
+            quit()
