@@ -36,4 +36,5 @@ class SendBlocksToConsumers(CallbackInterface):
             return True
 
         except Exception as error:
+            _logger.error(f"Error in send blocks: {error}")
             return False

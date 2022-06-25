@@ -3,11 +3,12 @@ This module start connection with queues
 """
 
 from app.worker.consumer import RegisterQueues
-from app.configs import get_logger
+from app.configs import get_logger, get_environment
 from app.worker import KombuWorker
 from app.worker.utils import start_connection_bus
 
 _logger = get_logger(name=__name__)
+_env = get_environment()
 
 
 class Application:
