@@ -28,7 +28,7 @@ class SendBlocksToConsumers(CallbackInterface):
             blocks_serialized = [block.dict() for block in blocks]
             for client in clients:
                 if client["name"] not in ["BLOCKS", "REGISTER", "VALIDATE"]:
-                    message = generate_event("", client["name"], {"data": blocks_serialized})
+                    message = generate_event(send_to=client["name"], payload={"data": blocks_serialized})
                     KombuProducer.send_messages(message)
                     _logger.info(f"Send blocks to client: {client['name']}")
             

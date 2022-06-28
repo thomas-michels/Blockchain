@@ -29,10 +29,8 @@ class RegisterClientCallback(CallbackInterface):
             _logger.info(f"Message - {message}")
             client = SimpleClientSchema(**message.payload)
             feedback = ClientServices().create_client(client)
-            if feedback.is_success:
-                return True
-
-            return False
+            return feedback.is_success
 
         except Exception as error:
+            _logger.error(f"Error on registry new client. {error}")
             return False
