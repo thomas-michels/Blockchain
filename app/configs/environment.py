@@ -9,6 +9,7 @@ class Environment(BaseSettings):
     """
     Environment, add the variable and its type here matching the .env file
     """
+
     MONGODB_URI: str
     RBMQ_HOST: str
     RBMQ_USER: str
@@ -21,6 +22,10 @@ class Environment(BaseSettings):
     ELECTION_CHANNEL: str
     REGISTER_CHANNEL: str
     VALIDATE_CHANNEL: str
+    TRANSACTIONS_CHANNEL: str
+    TOKENS_CHANNEL: str
+    ACCOUNT_BALANCE_CHANNEL: str
+    ACCOUNT_REGISTER_CHANNEL: str
 
     class Config:
         """Load config file"""

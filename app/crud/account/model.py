@@ -10,6 +10,8 @@ from mongoengine import (
     ListField,
     BooleanField,
 )
+from app.crud.transaction import TransactionModel
+from app.crud.token import TokenModel
 from app.db import SafeDocumentMixin
 
 

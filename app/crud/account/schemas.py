@@ -13,7 +13,6 @@ class SimpleAccountSchema(BaseModel):
 
     nickname: str = Field(example="Thomas")
     password: str = Field(example="e10adc3949ba59abbe56e057f20f883e")
-    creation_date: datetime = Field(example="2022-06-04 22:13:19.332981")
 
 
 class AccountSchema(SimpleAccountSchema):
@@ -23,8 +22,9 @@ class AccountSchema(SimpleAccountSchema):
 
     number: int = Field(example="123456")
     history: List = Field(example=[])
-    balance: int = Field(example=123)
+    balance: List = Field(example=[])
     active: bool = Field(default=True)
+    creation_date: datetime = Field(example="2022-06-04 22:13:19.332981")
 
 
 class AccountSchemaInDB(AccountSchema):
@@ -33,3 +33,15 @@ class AccountSchemaInDB(AccountSchema):
     """
 
     account_id: str = Field(example="16f8ddc6-3697-4b90-a5c5-1b60e26de6dc")
+
+
+class StandardAccountSchema(BaseModel):
+    """
+    Account Schema
+    """
+
+    number: int = Field(example="123456")
+    history: List = Field(example=[])
+    balance: List = Field(example=[])
+    active: bool = Field(default=True)
+    creation_date: datetime = Field(example="2022-06-04 22:13:19.332981")

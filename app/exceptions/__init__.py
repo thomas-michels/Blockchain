@@ -17,3 +17,5 @@ from app.exceptions.callback_exceptions import (
 )
 
 from app.exceptions.account_exceptions import *
+
+from app.exceptions.transactions_exceptions import *

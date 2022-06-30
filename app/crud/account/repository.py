@@ -3,9 +3,16 @@
 """
 
 from typing import List
+from app.crud.token import NTTokenSchema
 from app.db import BaseRepository
-from app.crud.account import AccountSchemaInDB, AccountSchema, AccountModel
+from app.crud.account import (
+    AccountSchema,
+    AccountModel,
+    AccountSchemaInDB,
+    StandardAccountSchema,
+)
 from app.exceptions import AccountInexistent
+from app.crud.transaction import TransactionSchemaInDB
 
 
 class AccountRepository(BaseRepository):
@@ -13,7 +20,7 @@ class AccountRepository(BaseRepository):
     AccountRepository class
     """
 
-    def create(self, item: AccountSchema) -> AccountSchema:
+    def create(self, item: AccountSchemaInDB) -> AccountSchemaInDB:
         """
         This method save item in ClientModel
 
@@ -24,7 +31,8 @@ class AccountRepository(BaseRepository):
             AccountSchema
         """
         item_serialized = item.dict()
-        AccountModel(**item_serialized).save_safe()
+        new_item = AccountModel(**item_serialized)
+        new_item.save_safe()
         return item
 
     def get(self, active=False) -> List[AccountSchema]:
@@ -40,17 +48,17 @@ class AccountRepository(BaseRepository):
         accounts = []
         for account in results:
             if not active:
-                accounts.append(AccountSchema(**account.serialize()))
+                accounts.append(StandardAccountSchema(**account.serialize()))
 
             else:
                 if account.active:
-                    accounts.append(AccountSchema(**account.serialize()))
+                    accounts.append(StandardAccountSchema(**account.serialize()))
 
         return accounts
 
     def get_by_number(self, number: int) -> AccountSchema:
         account_model = self.__get_by_number(number)
-        return AccountSchema(**account_model.serialize())
+        return StandardAccountSchema(**account_model.serialize())
 
     def delete(self, number: int) -> AccountSchema:
         """
@@ -66,7 +74,26 @@ class AccountRepository(BaseRepository):
         result.active = False
         result.save_safe()
 
-        return AccountSchema(**result.serialize())
+        return StandardAccountSchema(**result.serialize())
+
+    def add_mined_tokens(self, number: int, tokens: List[NTTokenSchema]) -> bool:
+        account = self.__get_by_number(number)
+        keys = [token.key for token in tokens]
+        account.balance.extend(keys)
+        account.save_safe()
+        return True
+
+    def registry_new_transaction(self, number: int, transaction: TransactionSchemaInDB):
+        account = self.__get_by_number(number)
+        account.history.append(transaction.transaction_id)
+        if account.number == transaction.sender_number:
+            for token in transaction.balance:
+                account.balance.remove(token)
+
+        elif account.number == transaction.receiver_number:
+            account.balance.extend(transaction.balance)
+
+        account.save_safe()
 
     def __get_by_number(self, number: int) -> AccountModel:
         """
