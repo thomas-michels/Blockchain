@@ -26,6 +26,9 @@ class Environment(BaseSettings):
     TOKENS_CHANNEL: str
     ACCOUNT_BALANCE_CHANNEL: str
     ACCOUNT_REGISTER_CHANNEL: str
+    JWT_SECRET: str
+    JWT_ALGORITHM: str
+    BALANCE_CONVERTER: int
 
     class Config:
         """Load config file"""

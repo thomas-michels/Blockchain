@@ -41,3 +41,8 @@ class AccountModel(Document, SafeDocumentMixin):
             "creation_date": self.creation_date,
             "active": self.active,
         }
+
+    def serialize_password(self) -> dict:
+        serialized = self.serialize()
+        serialized["password"] = self.password
+        return serialized

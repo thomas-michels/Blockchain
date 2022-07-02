@@ -10,9 +10,8 @@ from app.crud.token import NTTokenSchema
 from app.crud.transaction.schemas import TransactionSchemaInDB
 from app.exceptions import AccountInexistent, TransactionUnfonded
 from app.configs import get_logger
-from hashlib import sha256
 from random import randint
-from app.utils import generate_uuid
+from app.utils import generate_uuid, generate_hash, AuthTokenSchema, LoginSchema, JWTGenerator
 
 _logger = get_logger(name=__name__)
 
@@ -23,7 +22,6 @@ class AccountServices:
     """
 
     def __init__(self) -> None:
-        self.__sha256 = sha256()
         self.__repository = AccountRepository()
 
     def create_account(self, simple_account: SimpleAccountSchema) -> AccountSchemaInDB:
@@ -100,24 +98,19 @@ class AccountServices:
             _logger.error(f"Error in register_transaction. Error: {error}")
             raise TransactionUnfonded()
 
-    @staticmethod
-    def __check_found(sender_account: AccountSchema, tokens: List[NTTokenSchema]) -> List[NTTokenSchema]:
-        tokens_to_send = []
-        for token in sender_account.balance:
-            if token in tokens:
-                tokens_to_send.append(token)        
-
-            else:
-                return []
-        
-        return tokens_to_send
+    def login(self, login_schema: LoginSchema) -> AuthTokenSchema:
+        account = self.__repository.get_by_number(login_schema.number, True)
+        if account.password == generate_hash(login_schema.password):
+            jwt = JWTGenerator()
+            token = jwt.generate_jwt_token(login_schema.dict())
+            return AuthTokenSchema(token=token)
 
     def __mount_account(self, simple_account: SimpleAccountSchema) -> AccountSchemaInDB:
 
         payload = {}
         payload["account_id"] = generate_uuid()
         payload["nickname"] = simple_account.nickname
-        payload["password"] = self.__generate_hash(simple_account.password)
+        payload["password"] = generate_hash(simple_account.password)
         payload["creation_date"] = datetime.now()
         payload["number"] = self.__generate_valid_number()
         payload["history"] = []
@@ -125,10 +118,6 @@ class AccountServices:
         payload["active"] = True
 
         return AccountSchemaInDB(**payload)
-
-    def __generate_hash(self, password: str) -> str:
-        self.__sha256.update(bytes(password, encoding="utf-8"))
-        return self.__sha256.hexdigest()
 
     def __generate_valid_number(self) -> int:
         while True:

@@ -2,7 +2,7 @@
     Module for TransactionModel
 """
 
-from mongoengine import Document, StringField, DateTimeField, IntField, ListField
+from mongoengine import Document, StringField, DateTimeField, IntField, ListField, FloatField
 from app.db import SafeDocumentMixin
 
 
@@ -14,7 +14,7 @@ class TransactionModel(Document, SafeDocumentMixin):
     transaction_id = StringField(unique=True)
     sender_number = IntField(required=True)
     receiver_number = IntField(required=True)
-    quantity = IntField(required=True)
+    quantity = FloatField(required=True)
     balance = ListField(required=True)
     creation_date = DateTimeField(required=True)
 

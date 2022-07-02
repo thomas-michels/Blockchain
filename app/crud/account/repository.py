@@ -20,7 +20,7 @@ class AccountRepository(BaseRepository):
     AccountRepository class
     """
 
-    def create(self, item: AccountSchemaInDB) -> AccountSchemaInDB:
+    def create(self, item: AccountSchemaInDB) -> StandardAccountSchema:
         """
         This method save item in ClientModel
 
@@ -33,9 +33,9 @@ class AccountRepository(BaseRepository):
         item_serialized = item.dict()
         new_item = AccountModel(**item_serialized)
         new_item.save_safe()
-        return item
+        return StandardAccountSchema(**item_serialized)
 
-    def get(self, active=False) -> List[AccountSchema]:
+    def get(self, active=False) -> List[StandardAccountSchema]:
         """
         This method get all accounts in DB
 
@@ -56,11 +56,14 @@ class AccountRepository(BaseRepository):
 
         return accounts
 
-    def get_by_number(self, number: int) -> AccountSchema:
+    def get_by_number(self, number: int, password=False) -> StandardAccountSchema:
         account_model = self.__get_by_number(number)
+        if password:
+            return AccountSchemaInDB(**account_model.serialize_password())
+            
         return StandardAccountSchema(**account_model.serialize())
 
-    def delete(self, number: int) -> AccountSchema:
+    def delete(self, number: int) -> StandardAccountSchema:
         """
         This method delete by id summarized item in Account
 

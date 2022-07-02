@@ -4,7 +4,6 @@
 from datetime import datetime
 from typing import List
 from pydantic import BaseModel, Field
-from app.crud.token import NTTokenSchema
 
 
 class SimpleTransactionSchema(BaseModel):
@@ -14,7 +13,7 @@ class SimpleTransactionSchema(BaseModel):
 
     sender_number: int = Field(example="123123")
     receiver_number: int = Field(example="123123")
-    quantity: int = Field(example=123)
+    quantity: float = Field(example=10.1)
 
 
 class MiddleTransactionSchema(SimpleTransactionSchema):
