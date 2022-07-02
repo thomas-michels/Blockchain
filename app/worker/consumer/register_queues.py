@@ -61,7 +61,7 @@ class RegisterQueues:
         )
 
         queue_manager.register_callback(
-            _env.VALIDATE_CHANNEL, SendBlocksToConsumers(queue_manager.get_name_queues()).handle
+            _env.VALIDATE_CHANNEL, SendBlocksToConsumers().handle
         )
 
         _logger.info("All queues started")

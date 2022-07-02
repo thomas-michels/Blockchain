@@ -10,4 +10,9 @@ def get_all_active_clients():
 
     manager = connection.get_manager()
     queues = manager.get_queues("/")
-    return queues
+    correct_queues = []
+    for queue in queues:
+        if len(queue["name"].split()) > 1:
+            correct_queues.append(queue)
+            
+    return correct_queues
