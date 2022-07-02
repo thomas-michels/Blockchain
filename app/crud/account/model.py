@@ -10,8 +10,6 @@ from mongoengine import (
     ListField,
     BooleanField,
 )
-from app.crud.transaction import TransactionModel
-from app.crud.token import TokenModel
 from app.db import SafeDocumentMixin
 
 
@@ -29,7 +27,7 @@ class AccountModel(Document, SafeDocumentMixin):
     creation_date = DateTimeField(required=True)
     active = BooleanField(required=True)
 
-    meta = {"collection": "accounts", "indexes": ["account_id"]}
+    meta = {"collection": "accounts", "indexes": ["account_id", "number"]}
 
     def serialize(self) -> dict:
         return {

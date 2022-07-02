@@ -63,6 +63,15 @@ class QueueManager(metaclass=SingletonMeta):
         """
         return [callback.get_queue() for callback in self._queues]
 
+    def get_name_queues(self) -> List[str]:
+        """
+        Method to return all name of queues
+
+        :return:
+            List[str]
+        """
+        return [callback.get_queue_name() for callback in self._queues]
+
     def get_function(self, queue_name: str) -> Any:
         """
         Method to get callback function

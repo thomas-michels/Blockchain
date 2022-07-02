@@ -29,6 +29,7 @@ class Environment(BaseSettings):
     JWT_SECRET: str
     JWT_ALGORITHM: str
     BALANCE_CONVERTER: int
+    TIMED_CACHE: int
 
     class Config:
         """Load config file"""

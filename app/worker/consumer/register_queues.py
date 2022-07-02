@@ -10,7 +10,8 @@ from app.callbacks import (
     SendTokensToAccount,
     CreateTransactionCallback,
     AccountBalanceCallback,
-    RegisterAccountCallback
+    RegisterAccountCallback,
+    EventReceiverCallback
 )
 
 _logger = get_logger(name=__name__)
@@ -28,6 +29,14 @@ class RegisterQueues:
         queue_manager = QueueManager()
 
         queue_manager.register_callback(
+            _env.EVENT_CHANNEL, EventReceiverCallback().handle
+        )
+
+        queue_manager.register_callback(
+            _env.ELECTION_CHANNEL, EventReceiverCallback().handle
+        )
+
+        queue_manager.register_callback(
             _env.BLOCK_CHANNEL, RegisterBlockCallback().handle
         )
 
@@ -36,15 +45,7 @@ class RegisterQueues:
         )
 
         queue_manager.register_callback(
-            _env.VALIDATE_CHANNEL, SendBlocksToConsumers().handle
-        )
-
-        queue_manager.register_callback(
             _env.TRANSACTIONS_CHANNEL, CreateTransactionCallback().handle
-        )
-
-        queue_manager.register_callback(
-            _env.TOKENS_CHANNEL, SendTokensToAccount().handle
         )
 
         queue_manager.register_callback(
@@ -53,6 +54,14 @@ class RegisterQueues:
 
         queue_manager.register_callback(
             _env.ACCOUNT_REGISTER_CHANNEL, RegisterAccountCallback().handle
+        )
+
+        queue_manager.register_callback(
+            _env.TOKENS_CHANNEL, SendTokensToAccount().handle
+        )
+
+        queue_manager.register_callback(
+            _env.VALIDATE_CHANNEL, SendBlocksToConsumers(queue_manager.get_name_queues()).handle
         )
 
         _logger.info("All queues started")

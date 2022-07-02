@@ -38,3 +38,12 @@ class TransactionSchemaInDB(TransactionSchema):
     """
 
     transaction_id: str = Field(example="16f8ddc6-3697-4b90-a5c5-1b60e26de6dc")
+
+    def serialize(self):
+        return {
+            "transaction_id": self.transaction_id,
+            "sender_number": self.sender_number,
+            "receiver_number": self.receiver_number,
+            "quantity": self.quantity,
+            "creation_date": str(self.creation_date),
+        }

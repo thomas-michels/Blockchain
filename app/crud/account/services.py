@@ -9,11 +9,12 @@ from app.crud.account import AccountRepository, AccountSchema, SimpleAccountSche
 from app.crud.token import NTTokenSchema
 from app.crud.transaction.schemas import TransactionSchemaInDB
 from app.exceptions import AccountInexistent, TransactionUnfonded
-from app.configs import get_logger
+from app.configs import get_logger, get_environment
 from random import randint
-from app.utils import generate_uuid, generate_hash, AuthTokenSchema, LoginSchema, JWTGenerator
+from app.utils import generate_uuid, generate_hash, AuthTokenSchema, LoginSchema, JWTGenerator, timed_lru_cache
 
 _logger = get_logger(name=__name__)
+_env = get_environment()
 
 
 class AccountServices:
@@ -92,11 +93,16 @@ class AccountServices:
                 self.__repository.registry_new_transaction(receiver_account.number, transaction)
                 self.__repository.registry_new_transaction(sender_account.number, transaction)
                 _logger.info("Tokens sended with success")
+                self.save_in_cache(transaction.serialize().__str__())
                 return True
 
         except Exception as error:
             _logger.error(f"Error in register_transaction. Error: {error}")
             raise TransactionUnfonded()
+
+    @timed_lru_cache(_env.TIMED_CACHE)
+    def save_in_cache(self, transaction):
+        return transaction
 
     def login(self, login_schema: LoginSchema) -> AuthTokenSchema:
         account = self.__repository.get_by_number(login_schema.number, True)

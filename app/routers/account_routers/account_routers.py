@@ -16,7 +16,7 @@ __services = AccountServices()
 
 
 @router.post("/accounts/", tags=["accounts"], response_model=StandardAccountSchema)
-async def create_new_account(account: SimpleAccountSchema):
+def create_new_account(account: SimpleAccountSchema):
     response = __services.create_account(account)
     account_serialized = response.dict()
     account_serialized["creation_date"] = account_serialized["creation_date"].__str__()

@@ -11,7 +11,7 @@ from app.crud.transaction import (
     TransactionSchema,
     MiddleTransactionSchema
 )
-from app.utils import generate_uuid, generate_event
+from app.utils import generate_uuid, generate_event, timed_lru_cache
 from app.worker.producer import KombuProducer
 
 _logger = get_logger(name=__name__)
