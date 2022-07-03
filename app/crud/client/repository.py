@@ -51,6 +51,10 @@ class ClientRepository(BaseRepository):
         block_model = self.__get_by_id(id)
         return ClientSchema(**block_model.serialize())
 
+    def get_by_name(self, name: str) -> ClientSchema:
+        client = ClientModel.objects_safe(name=name).first()
+        return ClientSchema(**client.serialize())
+
     def delete(self, id: str) -> ClientSchema:
         """
         This method delete by id summarized item in Block

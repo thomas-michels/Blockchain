@@ -27,9 +27,10 @@ class SendBlocksToConsumers(CallbackInterface):
             blocks = BlockServices().get_all_blocks()
             blocks_serialized = [block.dict() for block in blocks]
             for client in clients:
-                message = generate_event_client(send_to=client["name"], function=_env.VALIDATE_FUNCTION, payload={"data": blocks_serialized})
-                KombuProducer.send_messages(message)
-                _logger.info(f"Send blocks to client: {client['name']}")
+                if message.payload["winner"] != client["name"]:
+                    message = generate_event_client(send_to=client["name"], function=_env.VALIDATE_FUNCTION, payload={"data": blocks_serialized})
+                    KombuProducer.send_messages(message)
+                    _logger.info(f"Send blocks to client: {client['name']}")
             
             _logger.info("Sended all blocks for all active clients")
             return True

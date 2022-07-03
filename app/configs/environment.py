@@ -32,6 +32,9 @@ class Environment(BaseSettings):
     TIMED_CACHE: int
     POW_FUNCTION: str
     VALIDATE_FUNCTION: str
+    STOP_POW_FUNCTION: str
+    NEW_BLOCK_FUNCTION: str
+    REWARD: int
 
     class Config:
         """Load config file"""

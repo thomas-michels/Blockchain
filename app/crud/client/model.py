@@ -2,7 +2,7 @@
     Client model
 """
 
-from mongoengine import Document, StringField, BooleanField, DateTimeField
+from mongoengine import Document, StringField, BooleanField, DateTimeField, IntField
 from app.db import SafeDocumentMixin
 
 
@@ -13,6 +13,7 @@ class ClientModel(Document, SafeDocumentMixin):
 
     client_id = StringField(unique=True)
     name = StringField(required=True)
+    account_number = IntField(required=True)
     connection_date = DateTimeField(required=True)
     active = BooleanField(required=True)
 
@@ -21,7 +22,8 @@ class ClientModel(Document, SafeDocumentMixin):
     def serialize(self) -> dict:
         return {
             "client_id": self.client_id,
+            "account_number": self.account_number,
             "name": self.name,
-            "connection_date": self.connection_date,
+            "connection_date": str(self.connection_date),
             "active": self.active,
         }

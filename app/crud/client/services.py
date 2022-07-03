@@ -47,6 +47,9 @@ class ClientServices:
         """
         return self.__repository.get(active=True)
 
+    def get_client_by_name(self, name: str) -> ClientSchema:
+        return self.__repository.get_by_name(name.upper())
+
     def __mount_client(self, simple_client: SimpleClientSchema) -> ClientSchema:
         """
         Method to mount the block
@@ -56,8 +59,9 @@ class ClientServices:
         :return: ClientSchema
         """
         payload = {}
+        payload["account_number"] = simple_client.account_number
         payload["client_id"] = simple_client.client_id
-        payload["name"] = simple_client.name
+        payload["name"] = simple_client.name.upper()
         payload["connection_date"] = datetime.now()
         payload["active"] = True
         return ClientSchema(**payload)

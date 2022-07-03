@@ -11,7 +11,8 @@ from app.callbacks import (
     CreateTransactionCallback,
     AccountBalanceCallback,
     RegisterAccountCallback,
-    EventReceiverCallback
+    EventReceiverCallback,
+    ElectionCallback
 )
 
 _logger = get_logger(name=__name__)
@@ -33,7 +34,7 @@ class RegisterQueues:
         )
 
         queue_manager.register_callback(
-            _env.ELECTION_CHANNEL, EventReceiverCallback().handle
+            _env.ELECTION_CHANNEL, ElectionCallback().handle
         )
 
         queue_manager.register_callback(

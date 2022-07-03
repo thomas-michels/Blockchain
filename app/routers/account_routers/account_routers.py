@@ -9,6 +9,7 @@ from app.crud.account import AccountServices, SimpleAccountSchema, StandardAccou
 from app.utils import AuthTokenSchema, LoginSchema, JWTBearer
 from app.configs import get_environment
 from app.exceptions import AccountInexistent
+from app.crud.client import ClientServices
 
 router = APIRouter()
 _env = get_environment()

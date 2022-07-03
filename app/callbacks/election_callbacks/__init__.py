@@ -1,0 +1,1 @@
+from app.callbacks.election_callbacks.election_callback import ElectionCallback

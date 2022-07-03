@@ -11,6 +11,7 @@ class SimpleClientSchema(BaseModel):
     """
     client_id: str = Field(example="16f8ddc6-3697-4b90-a5c5-1b60e26de6dc")
     name: str = Field(example="Penny Adams")
+    account_number: int = Field(example=123123)
 
 
 class ClientSchema(SimpleClientSchema):

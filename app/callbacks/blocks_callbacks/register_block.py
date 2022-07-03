@@ -30,6 +30,7 @@ class RegisterBlockCallback(CallbackInterface):
             block = SimpleBlockSchema(**message.payload)
             feedback = BlockServices().create_block(block)
             if feedback.is_success:
+                _logger.info("New block saved")
                 return True
 
             return False
