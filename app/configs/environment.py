@@ -31,6 +31,7 @@ class Environment(BaseSettings):
     BALANCE_CONVERTER: int
     TIMED_CACHE: int
     POW_FUNCTION: str
+    VALIDATE_FUNCTION: str
 
     class Config:
         """Load config file"""

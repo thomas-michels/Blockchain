@@ -7,7 +7,7 @@ from app.crud.block import BlockServices, SimpleBlockSchema
 from app.shared_schemas import EventSchema
 from app.configs import get_logger, get_environment
 from app.worker.producer import KombuProducer
-from app.utils import generate_event
+from app.utils import generate_event_client
 from app.worker.utils import get_all_active_clients
 
 _logger = get_logger(name=__name__)
@@ -27,7 +27,7 @@ class SendBlocksToConsumers(CallbackInterface):
             blocks = BlockServices().get_all_blocks()
             blocks_serialized = [block.dict() for block in blocks]
             for client in clients:
-                message = generate_event(send_to=client["name"], payload={"data": blocks_serialized})
+                message = generate_event_client(send_to=client["name"], function=_env.VALIDATE_FUNCTION, payload={"data": blocks_serialized})
                 KombuProducer.send_messages(message)
                 _logger.info(f"Send blocks to client: {client['name']}")
             
