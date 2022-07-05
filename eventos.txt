@@ -1,0 +1,86 @@
+
+===============================================
+BLOCK
+
+	{
+	   "id":"16f8ddc6-3697-4b90-a5c5-1b60e26de6dc",
+	   "sended_to":"BLOCKS",
+	   "payload":{
+		  "data":[
+			 "teste"
+		  ],
+		  "nonce":1234
+	   },
+	   "creation_date":"2022-06-04 22:13:19.332981"
+	}
+
+===============================================
+
+Client
+
+{
+   "id":"16f8ddc6-3697-4b90-a5c5-1b60e26de6dc",
+   "sended_to":"REGISTER",
+   "payload":{
+      "client_id": "16f8ddc6-3697-4b90-a5c5-1b60e26de6dc",
+      "name": "TESTE TESTE",
+      "account_number": 823118
+   },
+   "creation_date":"2022-06-04 22:13:19.332981"
+}
+
+===============================================
+
+Tokens
+
+{
+   "id":"16f8ddc6-3697-4b90-a5c5-1b60e26de6dc",
+   "sended_to":"TOKENS",
+   "payload":{
+      "account_number": 823118,
+	  "quantity": 100
+   },
+   "creation_date":"2022-06-04 22:13:19.332981"
+}
+
+===============================================
+
+ACCOUNT
+
+{
+   "id":"16f8ddc6-3697-4b90-a5c5-1b60e26de6dc",
+   "sended_to":"TOKENS",
+   "payload":{
+      "nickname": "Thomas",
+	  "password": "123456"
+   },
+   "creation_date":"2022-06-04 22:13:19.332981"
+}
+
+===============================================
+
+Transaction
+
+{
+   "id":"16f8ddc6-3697-4b90-a5c5-1b60e26de6dc",
+   "sended_to":"TRANSACTIONS",
+   "payload":{
+      "sender_number": 823118,
+	  "receiver_number": 843376,
+	  "quantity": 0.01
+   },
+   "creation_date":"2022-06-04 22:13:19.332981"
+}
+
+=======================================
+
+VALIDATE
+
+{
+   "id":"16f8ddc6-3697-4b90-a5c5-1b60e26de6dc",
+   "sended_to":"VALIDATE",
+   "payload":{
+      "winner": ""
+   },
+   "creation_date":"2022-06-04 22:13:19.332981"
+}
